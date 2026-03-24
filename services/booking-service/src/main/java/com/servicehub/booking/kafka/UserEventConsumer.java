@@ -1,6 +1,6 @@
 package com.servicehub.booking.kafka;
 
-import com.servicehub.booking.event.UserRegisteredEvent;
+import com.servicehub.common.event.UserRegisteredEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -14,7 +14,7 @@ public class UserEventConsumer {
     @KafkaListener(topics = "user-registered-topic", groupId = "booking-group")
     public void consume(UserRegisteredEvent event) {
 
-        LOGGER.info("Received event in Booking Service: {}", event.getEmail());
+        LOGGER.info("Received event in Booking Service: {}", event);
 
     }
 }

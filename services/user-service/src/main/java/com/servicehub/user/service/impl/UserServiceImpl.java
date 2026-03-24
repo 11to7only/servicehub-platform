@@ -2,7 +2,7 @@ package com.servicehub.user.service.impl;
 
 import com.servicehub.user.dto.UserRequestDTO;
 import com.servicehub.user.dto.UserResponseDTO;
-import com.servicehub.user.event.UserRegisteredEvent;
+import com.servicehub.common.event.UserRegisteredEvent;
 import com.servicehub.user.kafka.UserEventProducer;
 import com.servicehub.user.model.User;
 import com.servicehub.user.repository.UserRepository;

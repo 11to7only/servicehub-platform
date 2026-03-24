@@ -1,6 +1,6 @@
 package com.servicehub.user.kafka;
 
-import com.servicehub.user.event.UserRegisteredEvent;
+import com.servicehub.common.event.UserRegisteredEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
