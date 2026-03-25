@@ -5,6 +5,9 @@ spring:
   application:
     name: booking-service
 
+  flyway:
+    table: flyway_schema_history_booking
+
   datasource:
     url: jdbc:mysql://localhost:3306/bookingdb
     username: root
@@ -17,8 +20,9 @@ spring:
     show-sql: true
 
   kafka:
+    bootstrap-servers: localhost:9092
+
     consumer:
-      bootstrap-servers: localhost:9092
       group-id: booking-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -27,3 +31,7 @@ spring:
         spring.json.use.type.headers: true
         spring.json.trusted.packages: "*"
         spring.json.value.default.type: com.servicehub.common.event.UserRegisteredEvent
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

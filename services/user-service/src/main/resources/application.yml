@@ -5,6 +5,9 @@ spring:
   application:
     name: user-service
 
+  flyway:
+    table: flyway_schema_history_user
+
   datasource:
     url: jdbc:mysql://localhost:3306/userdb
     username: root
