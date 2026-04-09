@@ -19,7 +19,7 @@ public class UserEventConsumer {
         this.bookingRepository = bookingRepository;
     }
 
-    @KafkaListener(topics = "user-registered-topic", groupId = "booking-group")
+    //@KafkaListener(topics = "user-registered-topic", groupId = "booking-group")
     public void consume(UserRegisteredEvent event) {
 
         LOGGER.info("Processing event for user: {}", event.getEmail());

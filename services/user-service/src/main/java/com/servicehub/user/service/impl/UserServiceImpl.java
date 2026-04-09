@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         UserRegisteredEvent event =
                 new UserRegisteredEvent(user.getId(), user.getEmail());
 
-        producer.publishUserRegisteredEvent(event);
+        //producer.publishUserRegisteredEvent(event); stopping for few days due to low space in laptop
 
         // Prepare response
         UserResponseDTO response = new UserResponseDTO();
