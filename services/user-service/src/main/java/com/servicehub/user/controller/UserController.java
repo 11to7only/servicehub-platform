@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/users")
@@ -42,9 +44,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO getUserById(@PathVariable Long id) {
+    public UserResponseDTO getUserById(@PathVariable Long id) throws InterruptedException, ExecutionException {
         LOGGER.info("Fetching user with ID {}", id);
-        return userService.getUserById(id);
+        CompletableFuture<UserResponseDTO> future = userService.getUserById(id);
+        return future.get();
     }
 
     @DeleteMapping("/{id}")

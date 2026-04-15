@@ -7,7 +7,12 @@ import com.servicehub.user.kafka.UserEventProducer;
 import com.servicehub.user.model.User;
 import com.servicehub.user.repository.UserRepository;
 import com.servicehub.user.service.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,21 +50,32 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
+    @CircuitBreaker(name = "userServiceCB", fallbackMethod = "userFallback")
+    @Retry(name = "userServiceRetry")
+    @TimeLimiter(name = "userServiceTimeout")
     @Override
-    public UserResponseDTO getUserById(Long id) {
+    public CompletableFuture<UserResponseDTO> getUserById(Long id) {
 
-        User user = userRepository.findById(id).orElseThrow();
+        return CompletableFuture.supplyAsync(() -> {
+            User user = userRepository.findById(id).orElseThrow();
 
-        UserResponseDTO response = new UserResponseDTO();
-        response.setId(user.getId());
-        response.setName(user.getName());
-        response.setEmail(user.getEmail());
-
-        return response;
+            UserResponseDTO response = new UserResponseDTO();
+            response.setId(user.getId());
+            response.setName(user.getName());
+            response.setEmail(user.getEmail());
+            return response;
+        });
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    // 🔁 Fallback method
+    public CompletableFuture<UserResponseDTO> userFallback(Exception ex) {
+        UserResponseDTO response = new UserResponseDTO();
+        response.setError("User service is down. Order saved for later processing.");
+        return CompletableFuture.completedFuture(response);
     }
 }

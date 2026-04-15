@@ -5,6 +5,7 @@ public class UserResponseDTO {
     private Long id;
     private String name;
     private String email;
+    private String error;
 
     public Long getId() {
         return id;
@@ -28,5 +29,13 @@ public class UserResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
